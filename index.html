@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<link rel="stylesheet" type="text/css" href="main.css">
+  </head>
+  <body>
+	<div class="row">
+	<h3> Comprar:</h3>
+	<p><button onclick="melhoramaterial()">Material melhor</button> Custo: <span id="customaterial">32</span> </p>
+	<p><button onclick="alugapredio()">Predio</button> Custo: <span id="custopredio">250</span></p>
+	</div>
+	<div class="row">
+	<h3> Contratar:</h3>
+	<p><button onclick="compraestagio()">Estagiario</button> Custo: <span id="custoestagio">10</span></p>
+	<p><button onclick="compradev()">Desenvolvedor</button> Custo: <span id="custodev">20</span></p>
+	<p><button onclick="compragerente()">Gerente</button> Custo: <span id="custogerente">50</span></p>
+	</div>
+	<div class="row">
+	<h3><button onclick="trabalhar()">Trabalhar</button>
+	<br />Pts: <span id="pts">0</span>
+	<br />Pts(ps): <span id="ptsps">0</span>
+	<br />Funcionarios: <span id="funcionarios">0</span>/<span id="limitefuncionario">10</span></h3>
+	</div>
+  </body>
+</html>
+
+
+<script>
+var pts = 0;
+var estagiario = 0;
+var dev = 0;
+var gerente = 0;
+var ppc = 1;
+var ptsps = 0;
+var customaterial = 32;
+var custopredio = 250;
+var funcionarios = 0;
+var limitefuncionario = 10;
+var predios = 0;
+
+function trabalhar(){
+	pts += ppc;
+	document.getElementById("pts").innerHTML = prettify(pts);
+}
+
+function pps(){
+	pts += ptsps;
+	document.getElementById('pts').innerHTML = prettify(pts);
+	document.getElementById('ptsps').innerHTML = prettify(ptsps);
+}
+
+function melhoramaterial(){
+	if (pts >= document.getElementById('customaterial').innerHTML){
+		ppc++;
+		pts -= document.getElementById('customaterial').innerHTML;
+		document.getElementById('pts').innerHTML = prettify(pts);
+		var procusto = (document.getElementById('customaterial').innerHTML)*2;
+		document.getElementById('customaterial').innerHTML = procusto;
+	}
+}
+
+function alugapredio(){
+	if (pts >= document.getElementById('custopredio').innerHTML){
+		predios++;
+		limitefuncionario=limitefuncionario+20;
+		pts -= document.getElementById('custopredio').innerHTML;
+		document.getElementById('pts').innerHTML = prettify(pts);
+		document.getElementById('limitefuncionario').innerHTML = prettify(limitefuncionario);
+		document.getElementById('predios').innerHTML = prettify(predios);
+	}
+}
+
+function compraestagio(){
+	var custoestagio = Math.floor(10 * Math.pow(1.1, estagiario));
+	if (limitefuncionario > funcionarios) {
+		if (pts >= custoestagio){
+			estagiario += 0.1;
+			ptsps += 0.1;
+			pts -= custoestagio;
+			funcionarios++;
+			document.getElementById('funcionarios').innerHTML = prettify(funcionarios);
+			document.getElementById('pts').innerHTML = prettify(pts);
+			document.getElementById('ptsps').innerHTML = prettify(ptsps);
+		}
+		var procusto = Math.floor(10 * Math.pow(3.2, estagiario));
+		document.getElementById('custoestagio').innerHTML = prettify(procusto);
+	}
+}
+
+function compradev(){
+	var custodev = Math.floor(20 * Math.pow(1.2, dev));
+	if (limitefuncionario > funcionarios) {
+		if (pts >= custodev){
+			dev += 0.1;
+			ptsps += 0.2;
+			pts -= custodev;
+			funcionarios++;
+			document.getElementById('funcionarios').innerHTML = prettify(funcionarios);
+			document.getElementById('pts').innerHTML = prettify(pts);
+			document.getElementById('ptsps').innerHTML = prettify(ptsps);
+		}
+		var procusto = Math.floor(20 * Math.pow(3.2, dev));
+		document.getElementById('custodev').innerHTML = prettify(procusto);
+	}
+}
+
+function compragerente(){
+	var custogerente = Math.floor(50 * Math.pow(1.5, gerente));
+	if (limitefuncionario > funcionarios) {
+		if (pts >= custogerente){
+			gerente += 0.1;
+			ptsps += 1;
+			pts -= custogerente;
+			funcionarios++;
+			document.getElementById('funcionarios').innerHTML = prettify(funcionarios);
+			document.getElementById('pts').innerHTML = prettify(pts);
+			document.getElementById('ptsps').innerHTML = prettify(ptsps);
+		}
+	var procusto = Math.floor(50 * Math.pow(3.2, gerente));
+	document.getElementById('custogerente').innerHTML = prettify(procusto);
+	}
+}
+
+window.setInterval(pps, 1000);
+
+
+function prettify(input){
+	var output = Math.round(input * 1000000)/ 1000000;
+	return output;
+}
+</script>
